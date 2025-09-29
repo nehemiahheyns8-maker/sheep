@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Sheep of Christ</title>
+<link rel="stylesheet" href="style.css"></head><body>
+<div id="loader"><div class="cross"></div></div>
+<header><h1>Sheep of Christ</h1><nav><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="testimonies.html">Testimonies</a><a href="merch.html">Merch</a><a href="quiz.html">Bible Quiz</a></nav></header>
+<div class="container"><h2>Welcome</h2><div id="verse-box">Loading verse...</div>
+<p>Sheep of Christ is a place of repentance, worship, and encouragement. Seek Jesus, walk in the Spirit, and live free.</p></div>
+<div id="musicPlayer"><button onclick="togglePlay()">▶</button><span>Worship Song</span><audio id="audio" src="song.mp3"></audio></div>
+<div class="footer">Sheep of Christ — To God be the Glory ✝️</div>
+<script>
+window.onload=function(){document.getElementById('loader').style.display='none';};
+var verses=[
+ 'John 14:6 — Jesus said, "I am the way, the truth, and the life."',
+ 'Psalm 23:1 — The Lord is my shepherd; I shall not want.',
+ 'Romans 8:1 — There is now no condemnation for those in Christ Jesus.',
+ 'Matthew 6:33 — Seek first the kingdom of God and His righteousness.'
+];
+var i=0; function showVerse(){var box=document.getElementById('verse-box');box.style.opacity=0;
+ setTimeout(function(){box.innerText=verses[i];box.style.opacity=1;i=(i+1)%verses.length;},1000);}
+setInterval(showVerse,4000); showVerse();
+function togglePlay(){var audio=document.getElementById('audio');var btn=document.querySelector('#musicPlayer button');
+ if(audio.paused){audio.play();btn.innerText='⏸';}else{audio.pause();btn.innerText='▶';}}
+</script></body></html>

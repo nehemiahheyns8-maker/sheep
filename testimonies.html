@@ -1,0 +1,15 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Testimonies</title>
+<link rel="stylesheet" href="style.css"></head><body>
+<header><h1>Testimonies</h1><nav><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="testimonies.html">Testimonies</a><a href="merch.html">Merch</a><a href="quiz.html">Bible Quiz</a></nav></header>
+<div class="container"><h2>Share Your Testimony</h2>
+<textarea id="testimonyInput" maxlength="100" placeholder="Write up to 100 words..."></textarea><br>
+<button onclick="postTestimony()">Post Testimony</button>
+<div id="testimonies"></div></div>
+<div class="footer">Sheep of Christ</div>
+<script>
+function postTestimony(){var text=document.getElementById('testimonyInput').value.trim();if(!text)return;
+ var box=document.createElement('div');box.className='testimony-box';
+ box.innerHTML='<p>'+text+'</p><button onclick="replyTo(this)">Reply</button><div class="replies"></div>';
+ document.getElementById('testimonies').prepend(box);document.getElementById('testimonyInput').value='';}
+function replyTo(btn){var reply=prompt('Enter your reply:');if(reply){var div=document.createElement('div');div.className='reply-box';div.innerText=reply;btn.parentElement.querySelector('.replies').appendChild(div);}}
+</script></body></html>

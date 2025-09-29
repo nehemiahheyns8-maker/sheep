@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Bible Quiz</title>
+<link rel="stylesheet" href="style.css"></head><body>
+<header><h1>Bible Quiz</h1><nav><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="testimonies.html">Testimonies</a><a href="merch.html">Merch</a><a href="quiz.html">Bible Quiz</a></nav></header>
+<div class="container"><h2>Test Your Knowledge</h2>
+<form id="quizForm">
+<div class="quiz-question"><h3>1. Who built the ark?</h3>
+<label><input type="radio" name="q1" value="0"> Moses</label><br>
+<label><input type="radio" name="q1" value="1"> Noah</label><br>
+<label><input type="radio" name="q1" value="0"> Abraham</label></div>
+<div class="quiz-question"><h3>2. Where was Jesus born?</h3>
+<label><input type="radio" name="q2" value="1"> Bethlehem</label><br>
+<label><input type="radio" name="q2" value="0"> Nazareth</label><br>
+<label><input type="radio" name="q2" value="0"> Jerusalem</label></div>
+<div class="quiz-question"><h3>3. How many disciples did Jesus have?</h3>
+<label><input type="radio" name="q3" value="0"> 10</label><br>
+<label><input type="radio" name="q3" value="1"> 12</label><br>
+<label><input type="radio" name="q3" value="0"> 7</label></div>
+<div class="quiz-question"><h3>4. Who was swallowed by a big fish?</h3>
+<label><input type="radio" name="q4" value="0"> Daniel</label><br>
+<label><input type="radio" name="q4" value="1"> Jonah</label><br>
+<label><input type="radio" name="q4" value="0"> Elijah</label></div>
+<div class="quiz-question"><h3>5. What is the first book of the Bible?</h3>
+<label><input type="radio" name="q5" value="1"> Genesis</label><br>
+<label><input type="radio" name="q5" value="0"> Exodus</label><br>
+<label><input type="radio" name="q5" value="0"> Psalms</label></div>
+<button type="button" onclick="checkQuiz()">Submit</button></form>
+<p id="result"></p></div>
+<div class="footer">Sheep of Christ</div>
+<script>
+function checkQuiz(){var form=document.getElementById('quizForm');var score=0;
+ for(var i=1;i<=5;i++){var q=form['q'+i];for(var j=0;j<q.length;j++){if(q[j].checked)score+=parseInt(q[j].value);}}
+ document.getElementById('result').innerText="You scored "+score+"/5";}
+</script></body></html>
