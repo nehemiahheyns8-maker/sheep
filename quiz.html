@@ -1,33 +1,102 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Bible Quiz</title>
-<link rel="stylesheet" href="style.css"></head><body>
-<header><h1>Bible Quiz</h1><nav><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="testimonies.html">Testimonies</a><a href="merch.html">Merch</a><a href="quiz.html">Bible Quiz</a></nav></header>
-<div class="container"><h2>Test Your Knowledge</h2>
-<form id="quizForm">
-<div class="quiz-question"><h3>1. Who built the ark?</h3>
-<label><input type="radio" name="q1" value="0"> Moses</label><br>
-<label><input type="radio" name="q1" value="1"> Noah</label><br>
-<label><input type="radio" name="q1" value="0"> Abraham</label></div>
-<div class="quiz-question"><h3>2. Where was Jesus born?</h3>
-<label><input type="radio" name="q2" value="1"> Bethlehem</label><br>
-<label><input type="radio" name="q2" value="0"> Nazareth</label><br>
-<label><input type="radio" name="q2" value="0"> Jerusalem</label></div>
-<div class="quiz-question"><h3>3. How many disciples did Jesus have?</h3>
-<label><input type="radio" name="q3" value="0"> 10</label><br>
-<label><input type="radio" name="q3" value="1"> 12</label><br>
-<label><input type="radio" name="q3" value="0"> 7</label></div>
-<div class="quiz-question"><h3>4. Who was swallowed by a big fish?</h3>
-<label><input type="radio" name="q4" value="0"> Daniel</label><br>
-<label><input type="radio" name="q4" value="1"> Jonah</label><br>
-<label><input type="radio" name="q4" value="0"> Elijah</label></div>
-<div class="quiz-question"><h3>5. What is the first book of the Bible?</h3>
-<label><input type="radio" name="q5" value="1"> Genesis</label><br>
-<label><input type="radio" name="q5" value="0"> Exodus</label><br>
-<label><input type="radio" name="q5" value="0"> Psalms</label></div>
-<button type="button" onclick="checkQuiz()">Submit</button></form>
-<p id="result"></p></div>
-<div class="footer">Sheep of Christ</div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bible Quiz - Sheep of Christ</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .quiz-card { background:#fff; border-radius:10px; padding:20px; margin:20px auto; box-shadow:0 6px 18px rgba(0,0,0,0.1); max-width:600px; }
+    .question { font-size:1.2rem; font-weight:600; margin-bottom:16px; }
+    .options { display:flex; flex-direction:column; gap:10px; }
+    .option-btn { padding:10px 14px; border-radius:8px; border:1px solid #ddd; background:#f9f9f9; cursor:pointer; text-align:left; }
+    .option-btn.correct { background:#d1fae5; border-color:#10b981; }
+    .option-btn.wrong { background:#fee2e2; border-color:#ef4444; }
+    .next-btn { margin-top:16px; background:#2563eb; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; }
+    .result { font-size:1.2rem; font-weight:600; margin-top:20px; text-align:center; }
+  </style>
+</head>
+<body>
+  <header class="header-wrap">
+    <div class="header-inner">
+      <div class="brand"><img src="cross.svg" alt="logo" style="width:44px;height:44px;border-radius:8px"><h1>Sheep of Christ</h1></div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="merch.html">Merch</a>
+        <a href="quiz.html">Bible Quiz</a>
+        <a href="testimonies.html">Testimonies</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="quiz-card" id="quizBox">
+      <div id="quizContent"></div>
+    </div>
+  </main>
+
+  <footer class="footer">Sheep of Christ — To God be the Glory ✝️</footer>
+
 <script>
-function checkQuiz(){var form=document.getElementById('quizForm');var score=0;
- for(var i=1;i<=5;i++){var q=form['q'+i];for(var j=0;j<q.length;j++){if(q[j].checked)score+=parseInt(q[j].value);}}
- document.getElementById('result').innerText="You scored "+score+"/5";}
-</script></body></html>
+const quizData = [
+  { q:"Who was swallowed by a great fish?", options:["Moses","Jonah","David","Paul"], answer:1 },
+  { q:"What is the first book of the New Testament?", options:["Matthew","Genesis","Luke","Romans"], answer:0 },
+  { q:"Who denied Jesus three times?", options:["Peter","John","Thomas","James"], answer:0 },
+  { q:"Finish this verse: 'For God so loved the world that He gave His only ____.'", options:["angel","disciple","begotten Son","prophet"], answer:2 },
+  { q:"What did Jesus turn water into at the wedding in Cana?", options:["Milk","Wine","Olive oil","Honey"], answer:1 },
+  { q:"Which apostle was a tax collector?", options:["Paul","Matthew","Andrew","Philip"], answer:1 },
+  { q:"Who led the Israelites out of Egypt?", options:["Abraham","Moses","Joshua","Joseph"], answer:1 },
+  { q:"What is the last book of the Bible?", options:["Daniel","Revelation","Acts","Hebrews"], answer:1 },
+  { q:"Where was Jesus born?", options:["Nazareth","Jerusalem","Bethlehem","Capernaum"], answer:2 },
+  { q:"Who is known as the father of faith?", options:["Abraham","Isaac","Jacob","Noah"], answer:0 }
+];
+
+let current = 0;
+let score = 0;
+
+function loadQuestion() {
+  if(current >= quizData.length){
+    document.getElementById('quizContent').innerHTML = `
+      <div class="result">You scored ${score} out of ${quizData.length}!<br><br>
+      <strong>Well done! Keep seeking the Kingdom of God ✝️</strong></div>`;
+    return;
+  }
+
+  const data = quizData[current];
+  const html = `
+    <div class="question">${data.q}</div>
+    <div class="options">
+      ${data.options.map((opt,i)=>`<button class="option-btn" onclick="checkAnswer(this,${i})">${opt}</button>`).join('')}
+    </div>
+  `;
+  document.getElementById('quizContent').innerHTML = html;
+}
+
+function checkAnswer(btn, idx){
+  const data = quizData[current];
+  const options = document.querySelectorAll(".option-btn");
+  options.forEach(o=>o.disabled=true);
+
+  if(idx === data.answer){
+    btn.classList.add("correct");
+    score++;
+  } else {
+    btn.classList.add("wrong");
+    options[data.answer].classList.add("correct");
+  }
+
+  document.getElementById('quizContent').innerHTML += `<button class="next-btn" onclick="nextQuestion()">Next</button>`;
+}
+
+function nextQuestion(){
+  current++;
+  loadQuestion();
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
