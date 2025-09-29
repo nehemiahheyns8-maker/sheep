@@ -7,12 +7,30 @@
 <div id="musicPlayer"><button onclick="togglePlay()">▶</button><span>Worship Song</span><audio id="audio" src="song.mp3"></audio></div>
 <div class="footer">Sheep of Christ — To God be the Glory ✝️</div>
 <script>
-window.onload=function(){document.getElementById('loader').style.display='none';};
-var verses=[
- 'John 14:6 — Jesus said, "I am the way, the truth, and the life."',
- 'Psalm 23:1 — The Lord is my shepherd; I shall not want.',
- 'Romans 8:1 — There is now no condemnation for those in Christ Jesus.',
- 'Matthew 6:33 — Seek first the kingdom of God and His righteousness.'
+  const verses = [
+    "“The Lord is my shepherd; I shall not want.” – Psalm 23:1",
+    "“I am the way, the truth, and the life.” – John 14:6",
+    "“Be transformed by the renewing of your mind.” – Romans 12:2",
+    "“The Lord is near to the brokenhearted.” – Psalm 34:18",
+    "“Set your minds on things above, not on earthly things.” – Colossians 3:2"
+  ];
+
+  let index = 0;
+  const scriptureEl = document.getElementById("scripture");
+
+  function showVerse() {
+    scriptureEl.style.opacity = 0; // fade out
+    setTimeout(() => {
+      scriptureEl.textContent = verses[index];
+      scriptureEl.style.opacity = 1; // fade in
+      index = (index + 1) % verses.length;
+    }, 1000); // matches fade speed
+  }
+
+  setInterval(showVerse, 6000); // change every 6s
+  showVerse(); // run first time
+</script>
+
 ];
 var i=0; function showVerse(){var box=document.getElementById('verse-box');box.style.opacity=0;
  setTimeout(function(){box.innerText=verses[i];box.style.opacity=1;i=(i+1)%verses.length;},1000);}
