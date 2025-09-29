@@ -7,10 +7,12 @@
   <link rel="stylesheet" href="style.css">
   <style>
     /* Testimony-specific small styles (keeps using your main style.css) */
-    .test-form { background:#fff;border-radius:10px;padding:14px;margin-bottom:12px; box-shadow:0 6px 18px rgba(0,0,0,0.05); }
-    .test-form .row{display:flex;gap:8px;margin-bottom:8px}
-    .test-form input,.test-form select,.test-form textarea{padding:8px;border-radius:8px;border:1px solid #e5e7eb; width:100%}
-    .test-form .small{font-size:0.9rem;color:#666}
+    card.innerHTML = `
+  <strong>${name}</strong>
+  <p>${message}</p>
+  <button class="replyBtn">Reply</button>
+  <button class="likeBtn">Amen 👍 <span class="likeCount">0</span></button>
+  <div class="replies"></div>
     .tag{display:inline-block;background:#f0f7ff;color:#1e3a8a;border-radius:12px;padding:6px 10px;font-weight:700;margin-bottom:6px}
     .meta{font-size:0.85rem;color:#666;margin-bottom:6px}
     .reply-area{margin-top:8px}
@@ -240,5 +242,15 @@ seedIfEmpty();
 renderList();
 
 </script>
+    // Like / Amen feature
+  const likeBtn = card.querySelector(".likeBtn");
+  const likeCount = card.querySelector(".likeCount");
+  let count = 0;
+
+  likeBtn.addEventListener("click", () => {
+    count++;
+    likeCount.textContent = count;
+  });
+
 </body>
 </html>
