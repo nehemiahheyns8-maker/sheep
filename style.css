@@ -1,4 +1,13 @@
-body { font-family: Arial, sans-serif; background: #f5f9ff; color: #222; margin: 0; padding: 0; }
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #e6f2ff, #ffffff);
+  background-image: url("https://www.transparenttextures.com/patterns/clouds.png");
+  background-repeat: repeat;
+  background-attachment: fixed;
+  color: #333;
+}
 header { background: #2b6cff; color: white; padding: 1em; text-align: center; }
 nav a { color: white; margin: 0 10px; text-decoration: none; font-weight: bold; }
 .container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
