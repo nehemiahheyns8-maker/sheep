@@ -178,3 +178,19 @@ body {
   66% { background-image: url('images/bg3.jpg'); }
   100% { background-image: url('images/bg1.jpg'); }
 }
+.likeBtn {
+  background: #f4f6ff;
+  border: 1px solid #4a90e2;
+  color: #4a90e2;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.likeBtn:hover {
+  background: #4a90e2;
+  color: white;
+}
+
