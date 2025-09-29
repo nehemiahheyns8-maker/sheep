@@ -1,40 +1,41 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Sheep of Christ</title>
-<link rel="stylesheet" href="style.css"></head><body>
-<div id="loader"><div class="cross"></div></div>
-<header><h1>Sheep of Christ</h1><nav><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="testimonies.html">Testimonies</a><a href="merch.html">Merch</a><a href="quiz.html">Bible Quiz</a></nav></header>
-<div class="container"><h2>Welcome</h2><div id="verse-box">Loading verse...</div>
-<p>Sheep of Christ is a place of repentance, worship, and encouragement. Seek Jesus, walk in the Spirit, and live free.</p></div>
-<div id="musicPlayer"><button onclick="togglePlay()">▶</button><span>Worship Song</span><audio id="audio" src="song.mp3"></audio></div>
-<div class="footer">Sheep of Christ — To God be the Glory ✝️</div>
-<script>
-  const verses = [
-    "“The Lord is my shepherd; I shall not want.” – Psalm 23:1",
-    "“I am the way, the truth, and the life.” – John 14:6",
-    "“Be transformed by the renewing of your mind.” – Romans 12:2",
-    "“The Lord is near to the brokenhearted.” – Psalm 34:18",
-    "“Set your minds on things above, not on earthly things.” – Colossians 3:2"
-  ];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sheep of Christ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Sheep of Christ</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="testimonies.html">Testimonies</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-  let index = 0;
-  const scriptureEl = document.getElementById("scripture");
+  <!-- Welcome Section -->
+  <main>
+    <section id="welcome">
+      <h2>Welcome</h2>
+      <p>
+        We are followers of Jesus Christ, calling all people to repentance and 
+        new life in Him. Set your mind on things above, not on worldly struggles. 
+        Through His Spirit we live free, grateful, and hopeful.
+      </p>
+      <!-- Example image (make sure cross.jpg is uploaded to GitHub) -->
+      <img src="cross.jpg" alt="Cross" width="300">
+    </section>
+  </main>
 
-  function showVerse() {
-    scriptureEl.style.opacity = 0; // fade out
-    setTimeout(() => {
-      scriptureEl.textContent = verses[index];
-      scriptureEl.style.opacity = 1; // fade in
-      index = (index + 1) % verses.length;
-    }, 1000); // matches fade speed
-  }
-
-  setInterval(showVerse, 6000); // change every 6s
-  showVerse(); // run first time
-</script>
-
-];
-var i=0; function showVerse(){var box=document.getElementById('verse-box');box.style.opacity=0;
- setTimeout(function(){box.innerText=verses[i];box.style.opacity=1;i=(i+1)%verses.length;},1000);}
-setInterval(showVerse,4000); showVerse();
-function togglePlay(){var audio=document.getElementById('audio');var btn=document.querySelector('#musicPlayer button');
- if(audio.paused){audio.play();btn.innerText='⏸';}else{audio.pause();btn.innerText='▶';}}
-</script></body></html>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Sheep of Christ | Built for God’s glory</p>
+  </footer>
+</body>
+</html>
