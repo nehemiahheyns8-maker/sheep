@@ -1,102 +1,184 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Bible Quiz - Sheep of Christ</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sheep of Christ Quiz</title>
   <style>
-    .quiz-card { background:#fff; border-radius:10px; padding:20px; margin:20px auto; box-shadow:0 6px 18px rgba(0,0,0,0.1); max-width:600px; }
-    .question { font-size:1.2rem; font-weight:600; margin-bottom:16px; }
-    .options { display:flex; flex-direction:column; gap:10px; }
-    .option-btn { padding:10px 14px; border-radius:8px; border:1px solid #ddd; background:#f9f9f9; cursor:pointer; text-align:left; }
-    .option-btn.correct { background:#d1fae5; border-color:#10b981; }
-    .option-btn.wrong { background:#fee2e2; border-color:#ef4444; }
-    .next-btn { margin-top:16px; background:#2563eb; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; }
-    .result { font-size:1.2rem; font-weight:600; margin-top:20px; text-align:center; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background: linear-gradient(90deg, #4facfe, #00f2fe);
+      color: white;
+      padding: 20px;
+    }
+    header h1 {
+      margin: 0;
+    }
+    #quiz-container {
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      animation: fadeIn 0.5s ease;
+    }
+    .question {
+      font-size: 1.3em;
+      margin-bottom: 15px;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+    .options button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #0072ff, #00c6ff);
+    }
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    #timer {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      color: #d00000;
+    }
+    #result {
+      font-size: 1.5em;
+      margin-top: 20px;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
   </style>
 </head>
 <body>
-  <header class="header-wrap">
-    <div class="header-inner">
-      <div class="brand"><img src="cross.svg" alt="logo" style="width:44px;height:44px;border-radius:8px"><h1>Sheep of Christ</h1></div>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="projects.html">Projects</a>
-        <a href="merch.html">Merch</a>
-        <a href="quiz.html">Bible Quiz</a>
-        <a href="testimonies.html">Testimonies</a>
-        <a href="contact.html">Contact</a>
-      </div>
-    </div>
+  <header>
+    <h1>Sheep of Christ Quiz</h1>
+    <p>Test your knowledge and faith 🙏</p>
   </header>
 
-  <main class="container">
-    <div class="quiz-card" id="quizBox">
-      <div id="quizContent"></div>
-    </div>
-  </main>
+  <div id="quiz-container">
+    <div id="timer">Time left: 60s</div>
+    <div id="quiz"></div>
+    <div id="result"></div>
+    <button id="restart" style="display:none;">Restart Quiz</button>
+  </div>
 
-  <footer class="footer">Sheep of Christ — To God be the Glory ✝️</footer>
+  <script>
+    const questions = [
+      // --- Bible Facts ---
+      { q: "Who built the ark?", options: ["Moses", "Noah", "Abraham", "David"], answer: "Noah", ref: "Genesis 6:13-14" },
+      { q: "Where was Jesus born?", options: ["Jerusalem", "Bethlehem", "Nazareth", "Capernaum"], answer: "Bethlehem", ref: "Luke 2:4-7" },
+      { q: "Who led the Israelites out of Egypt?", options: ["Moses", "Joshua", "Aaron", "Joseph"], answer: "Moses", ref: "Exodus 3:10" },
+      { q: "What did David use to defeat Goliath?", options: ["Sword", "Spear", "Sling & Stone", "Bow"], answer: "Sling & Stone", ref: "1 Samuel 17:49" },
+      { q: "Who was swallowed by a great fish?", options: ["Jonah", "Peter", "Paul", "Job"], answer: "Jonah", ref: "Jonah 1:17" },
+      { q: "How many days did God take to create the world?", options: ["3", "5", "6", "7"], answer: "6", ref: "Genesis 1" },
+      { q: "Who denied Jesus three times?", options: ["John", "Peter", "Judas", "Thomas"], answer: "Peter", ref: "Luke 22:61" },
+      { q: "Which disciple betrayed Jesus?", options: ["Peter", "Judas", "James", "Andrew"], answer: "Judas", ref: "Matthew 26:14-16" },
+      { q: "What is the first book of the Bible?", options: ["Genesis", "Exodus", "Psalms", "Matthew"], answer: "Genesis", ref: "Genesis 1:1" },
+      { q: "Who received the Ten Commandments?", options: ["Abraham", "David", "Moses", "Elijah"], answer: "Moses", ref: "Exodus 20" },
 
-<script>
-const quizData = [
-  { q:"Who was swallowed by a great fish?", options:["Moses","Jonah","David","Paul"], answer:1 },
-  { q:"What is the first book of the New Testament?", options:["Matthew","Genesis","Luke","Romans"], answer:0 },
-  { q:"Who denied Jesus three times?", options:["Peter","John","Thomas","James"], answer:0 },
-  { q:"Finish this verse: 'For God so loved the world that He gave His only ____.'", options:["angel","disciple","begotten Son","prophet"], answer:2 },
-  { q:"What did Jesus turn water into at the wedding in Cana?", options:["Milk","Wine","Olive oil","Honey"], answer:1 },
-  { q:"Which apostle was a tax collector?", options:["Paul","Matthew","Andrew","Philip"], answer:1 },
-  { q:"Who led the Israelites out of Egypt?", options:["Abraham","Moses","Joshua","Joseph"], answer:1 },
-  { q:"What is the last book of the Bible?", options:["Daniel","Revelation","Acts","Hebrews"], answer:1 },
-  { q:"Where was Jesus born?", options:["Nazareth","Jerusalem","Bethlehem","Capernaum"], answer:2 },
-  { q:"Who is known as the father of faith?", options:["Abraham","Isaac","Jacob","Noah"], answer:0 }
-];
+      // --- Practical Life ---
+      { q: "What should a Christian do when tempted?", options: ["Give in", "Pray & resist", "Ignore it", "Blame others"], answer: "Pray & resist", ref: "James 4:7" },
+      { q: "How should we treat our enemies?", options: ["Hate them", "Ignore them", "Love & pray for them", "Fight them"], answer: "Love & pray for them", ref: "Matthew 5:44" },
+      { q: "What should we do instead of worrying?", options: ["Complain", "Pray", "Run away", "Stay silent"], answer: "Pray", ref: "Philippians 4:6" },
+      { q: "What is the greatest commandment?", options: ["Love your neighbor", "Love God", "Do not steal", "Honor parents"], answer: "Love God", ref: "Matthew 22:37-38" },
+      { q: "How should Christians give?", options: ["Grudgingly", "Cheerfully", "Only when rich", "Never"], answer: "Cheerfully", ref: "2 Corinthians 9:7" },
+      { q: "What should we set our minds on?", options: ["Earthly things", "Money", "Things above", "Fame"], answer: "Things above", ref: "Colossians 3:2" },
+      { q: "How often should we forgive others?", options: ["Once", "Seven times", "Seventy times seven", "Never"], answer: "Seventy times seven", ref: "Matthew 18:21-22" },
+      { q: "What is fasting an act of?", options: ["Dieting", "Worship", "Self-punishment", "Show-off"], answer: "Worship", ref: "Matthew 6:16-18" },
+      { q: "What should we do with God’s Word?", options: ["Ignore it", "Read it daily", "Hide it away", "Change it"], answer: "Read it daily", ref: "Joshua 1:8" },
+      { q: "How can we draw near to God?", options: ["Through sin", "Through prayer & worship", "Through pride", "Through fear"], answer: "Through prayer & worship", ref: "Hebrews 10:22" },
+    ];
 
-let current = 0;
-let score = 0;
+    let shuffled = [];
+    let current = 0;
+    let score = 0;
+    let timer = 60;
+    let interval;
 
-function loadQuestion() {
-  if(current >= quizData.length){
-    document.getElementById('quizContent').innerHTML = `
-      <div class="result">You scored ${score} out of ${quizData.length}!<br><br>
-      <strong>Well done! Keep seeking the Kingdom of God ✝️</strong></div>`;
-    return;
-  }
+    const quizDiv = document.getElementById("quiz");
+    const resultDiv = document.getElementById("result");
+    const timerDiv = document.getElementById("timer");
+    const restartBtn = document.getElementById("restart");
 
-  const data = quizData[current];
-  const html = `
-    <div class="question">${data.q}</div>
-    <div class="options">
-      ${data.options.map((opt,i)=>`<button class="option-btn" onclick="checkAnswer(this,${i})">${opt}</button>`).join('')}
-    </div>
-  `;
-  document.getElementById('quizContent').innerHTML = html;
-}
+    function startQuiz() {
+      shuffled = questions.sort(() => Math.random() - 0.5);
+      current = 0;
+      score = 0;
+      timer = 60;
+      resultDiv.innerHTML = "";
+      restartBtn.style.display = "none";
+      showQuestion();
+      interval = setInterval(() => {
+        timer--;
+        timerDiv.textContent = "Time left: " + timer + "s";
+        if (timer <= 0) endQuiz();
+      }, 1000);
+    }
 
-function checkAnswer(btn, idx){
-  const data = quizData[current];
-  const options = document.querySelectorAll(".option-btn");
-  options.forEach(o=>o.disabled=true);
+    function showQuestion() {
+      if (current >= shuffled.length) {
+        endQuiz();
+        return;
+      }
+      const q = shuffled[current];
+      quizDiv.innerHTML = `
+        <div class="card">
+          <div class="question">${q.q}</div>
+          <div class="options">
+            ${q.options.map(opt => `<button onclick="checkAnswer('${opt}','${q.answer}','${q.ref}')">${opt}</button>`).join('')}
+          </div>
+          <div id="feedback"></div>
+        </div>
+      `;
+    }
 
-  if(idx === data.answer){
-    btn.classList.add("correct");
-    score++;
-  } else {
-    btn.classList.add("wrong");
-    options[data.answer].classList.add("correct");
-  }
+    function checkAnswer(selected, correct, ref) {
+      const feedback = document.getElementById("feedback");
+      if (selected === correct) {
+        score++;
+        feedback.innerHTML = `<div class="feedback" style="color:green;">✅ Correct! (${ref})</div>`;
+      } else {
+        feedback.innerHTML = `<div class="feedback" style="color:red;">❌ Wrong! Correct: ${correct} (${ref})</div>`;
+      }
+      current++;
+      setTimeout(showQuestion, 1200);
+    }
 
-  document.getElementById('quizContent').innerHTML += `<button class="next-btn" onclick="nextQuestion()">Next</button>`;
-}
+    function endQuiz() {
+      clearInterval(interval);
+      quizDiv.innerHTML = "";
+      resultDiv.innerHTML = `🏆 You scored ${score} / ${questions.length}`;
+      restartBtn.style.display = "inline-block";
+    }
 
-function nextQuestion(){
-  current++;
-  loadQuestion();
-}
+    restartBtn.addEventListener("click", startQuiz);
 
-loadQuestion();
-</script>
+    // Start when page loads
+    startQuiz();
+  </script>
 </body>
 </html>
