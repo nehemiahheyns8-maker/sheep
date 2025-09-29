@@ -1,15 +1,244 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Testimonies</title>
-<link rel="stylesheet" href="style.css"></head><body>
-<header><h1>Testimonies</h1><nav><a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="testimonies.html">Testimonies</a><a href="merch.html">Merch</a><a href="quiz.html">Bible Quiz</a></nav></header>
-<div class="container"><h2>Share Your Testimony</h2>
-<textarea id="testimonyInput" maxlength="100" placeholder="Write up to 100 words..."></textarea><br>
-<button onclick="postTestimony()">Post Testimony</button>
-<div id="testimonies"></div></div>
-<div class="footer">Sheep of Christ</div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Testimonies - Sheep of Christ</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Testimony-specific small styles (keeps using your main style.css) */
+    .test-form { background:#fff;border-radius:10px;padding:14px;margin-bottom:12px; box-shadow:0 6px 18px rgba(0,0,0,0.05); }
+    .test-form .row{display:flex;gap:8px;margin-bottom:8px}
+    .test-form input,.test-form select,.test-form textarea{padding:8px;border-radius:8px;border:1px solid #e5e7eb; width:100%}
+    .test-form .small{font-size:0.9rem;color:#666}
+    .tag{display:inline-block;background:#f0f7ff;color:#1e3a8a;border-radius:12px;padding:6px 10px;font-weight:700;margin-bottom:6px}
+    .meta{font-size:0.85rem;color:#666;margin-bottom:6px}
+    .reply-area{margin-top:8px}
+    .btn-reply{background:#06b6d4;color:white;border-radius:8px;border:none;padding:6px 10px;cursor:pointer}
+    .empty-msg{color:#666;font-style:italic}
+  </style>
+</head>
+<body>
+  <!-- Use the same header/nav as your site -->
+  <header class="header-wrap">
+    <div class="header-inner">
+      <div class="brand"><img src="cross.svg" alt="logo" style="width:44px;height:44px;border-radius:8px"><h1>Sheep of Christ</h1></div>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="merch.html">Merch</a>
+        <a href="quiz.html">Bible Quiz</a>
+        <a href="testimonies.html">Testimonies</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2 class="section-title">Share a Testimony (100 words max)</h2>
+
+      <div class="test-form" id="formBox">
+        <div class="row">
+          <input id="nameInput" placeholder="Your name (optional)">
+          <select id="scenarioSelect">
+            <option value="">-- Choose a scenario (helps others) --</option>
+            <option>Overcoming lust</option>
+            <option>Leaving secular music</option>
+            <option>Freedom from addiction</option>
+            <option>Drawing near to God</option>
+            <option>Gratitude & worship</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom:8px">
+          <textarea id="msgInput" placeholder="Write your testimony (100 words max)"></textarea>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="small" id="wordCount">0 / 100 words</div>
+          <div>
+            <button class="btn" id="shareBtn">Share Testimony</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h3 class="section-title">Stories of Hope</h3>
+        <div id="listArea"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">Sheep of Christ — To God be the Glory ✝️</footer>
+
 <script>
-function postTestimony(){var text=document.getElementById('testimonyInput').value.trim();if(!text)return;
- var box=document.createElement('div');box.className='testimony-box';
- box.innerHTML='<p>'+text+'</p><button onclick="replyTo(this)">Reply</button><div class="replies"></div>';
- document.getElementById('testimonies').prepend(box);document.getElementById('testimonyInput').value='';}
-function replyTo(btn){var reply=prompt('Enter your reply:');if(reply){var div=document.createElement('div');div.className='reply-box';div.innerText=reply;btn.parentElement.querySelector('.replies').appendChild(div);}}
-</script></body></html>
+/* ================= Utilities ================= */
+function escapeHtml(str){
+  if(!str) return '';
+  return String(str)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'", '&#39;');
+}
+function wordCount(text){
+  if(!text) return 0;
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+function nowString(){
+  return (new Date()).toLocaleString();
+}
+
+/* ================= Persistence ================= */
+const STORAGE_KEY = 'sheep_testimonies_v2';
+
+function loadSaved(){
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  } catch(e){
+    return null;
+  }
+}
+function saveAll(arr){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+/* ================= Seed examples (only if empty) ================= */
+function seedIfEmpty(){
+  let arr = loadSaved();
+  if(!arr || arr.length === 0){
+    arr = [
+      { id: Date.now()+1, name: 'Anonymous', scenario: 'Overcoming lust', msg: 'I prayed and began fasting. God gave me strength to break the chains.', ts: nowString(), replies: [{ name:'Grace', msg:'So encouraged by this!', ts: nowString() }] },
+      { id: Date.now()+2, name: 'A believer', scenario: 'Leaving secular music', msg: 'I replaced playlists with worship songs and my heart changed.', ts: nowString(), replies: [] },
+      { id: Date.now()+3, name: 'Anonymous', scenario: 'Freedom from addiction', msg: 'Support from a recovery group and daily Scripture saved me.', ts: nowString(), replies: [] }
+    ];
+    saveAll(arr);
+  }
+}
+
+/* ================= Rendering ================= */
+function renderList(){
+  const container = document.getElementById('listArea');
+  const arr = loadSaved() || [];
+  if(arr.length === 0){
+    container.innerHTML = '<p class="empty-msg">No testimonies yet — be the first to share hope.</p>';
+    return;
+  }
+  // Show newest first
+  const html = arr.slice().reverse().map(item => {
+    const safeName = escapeHtml(item.name || 'Anonymous');
+    const safeMsg = escapeHtml(item.msg);
+    const scenarioTag = item.scenario ? `<span class="tag">${escapeHtml(item.scenario)}</span>` : '';
+    const repliesHtml = (item.replies || []).map(r => {
+      return `<div class="reply-item"><strong>${escapeHtml(r.name||'Anonymous')}</strong> <div class="small">${escapeHtml(r.msg)}</div></div>`;
+    }).join('');
+    // Reply area toggles via JS (each block has buttons with data-id)
+    return `
+      <div class="testimony-card" data-id="${item.id}" style="margin-bottom:12px">
+        ${scenarioTag}
+        <div class="meta"><strong>${safeName}</strong> • <span class="small">${escapeHtml(item.ts)}</span></div>
+        <div style="margin:6px 0"><p>${safeMsg.replace(/\n/g,'<br>')}</p></div>
+        <div>${repliesHtml}</div>
+        <div style="margin-top:8px">
+          <button class="btn-reply" data-action="open-reply" data-id="${item.id}">Reply</button>
+          <button class="btn" data-action="toggle-replies" data-id="${item.id}">Show/Hide Replies</button>
+        </div>
+        <div class="reply-area" id="reply-area-${item.id}" style="display:none;margin-top:8px">
+          <input placeholder="Your name (optional)" id="rname-${item.id}" style="width:60%;padding:8px;border-radius:6px;border:1px solid #eee">
+          <input placeholder="Reply (max 50 words)" id="rmsg-${item.id}" style="width:38%;padding:8px;border-radius:6px;border:1px solid #eee;margin-left:6px">
+          <div style="margin-top:8px"><button class="btn" data-action="post-reply" data-id="${item.id}">Post Reply</button></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  container.innerHTML = html;
+}
+
+/* ================= Actions ================= */
+function postTestimony(){
+  const name = document.getElementById('nameInput').value.trim();
+  const scenario = document.getElementById('scenarioSelect').value;
+  const msg = document.getElementById('msgInput').value.trim();
+  const wc = wordCount(msg);
+  if(wc === 0){ alert('Please write a short testimony first.'); return; }
+  if(wc > 100){ alert('Please limit to 100 words.'); return; }
+  const arr = loadSaved() || [];
+  const t = { id: Date.now(), name: name || 'Anonymous', scenario: scenario || '', msg, ts: nowString(), replies: [] };
+  arr.push(t);
+  saveAll(arr);
+  // clear form
+  document.getElementById('nameInput').value = '';
+  document.getElementById('scenarioSelect').value = '';
+  document.getElementById('msgInput').value = '';
+  document.getElementById('wordCount').textContent = '0 / 100 words';
+  renderList();
+}
+
+/* Post reply by testimony id */
+function postReplyById(id){
+  const rname = document.getElementById('rname-'+id).value.trim() || 'Anonymous';
+  const rmsg = document.getElementById('rmsg-'+id).value.trim();
+  if(!rmsg){ alert('Please write a reply.'); return; }
+  if(wordCount(rmsg) > 50) { alert('Replies are limited to 50 words.'); return; }
+  const arr = loadSaved() || [];
+  const idx = arr.findIndex(x => x.id === id);
+  if(idx === -1) { alert('Testimony not found.'); return; }
+  arr[idx].replies = arr[idx].replies || [];
+  arr[idx].replies.push({ name: rname, msg: rmsg, ts: nowString() });
+  saveAll(arr);
+  // clear reply inputs and re-render
+  document.getElementById('rname-'+id).value = '';
+  document.getElementById('rmsg-'+id).value = '';
+  // hide reply area
+  const area = document.getElementById('reply-area-'+id);
+  if(area) area.style.display = 'none';
+  renderList();
+}
+
+/* Toggle reply area visibility */
+function toggleReplyArea(id){
+  const area = document.getElementById('reply-area-'+id);
+  if(!area) return;
+  area.style.display = (area.style.display === 'none' || !area.style.display) ? 'block' : 'none';
+}
+
+/* Event delegation for reply buttons */
+document.addEventListener('click', function(e){
+  const target = e.target;
+  const action = target.getAttribute && target.getAttribute('data-action');
+  if(!action) return;
+  const id = Number(target.getAttribute('data-id'));
+  if(action === 'open-reply'){ toggleReplyArea(id); }
+  if(action === 'post-reply'){ postReplyById(id); }
+  if(action === 'toggle-replies'){ /* simply re-render so replies show/hide naturally */ renderList(); }
+});
+
+/* Word counter on textarea */
+document.addEventListener('input', function(e){
+  if(e.target && e.target.id === 'msgInput'){
+    const c = wordCount(e.target.value);
+    if(c > 100){
+      // truncate to 100 words
+      const arr = e.target.value.trim().split(/\s+/).filter(Boolean).slice(0,100);
+      e.target.value = arr.join(' ');
+    }
+    document.getElementById('wordCount').textContent = Math.min(100, c) + ' / 100 words';
+  }
+});
+
+/* Hook up share button */
+document.getElementById('shareBtn').addEventListener('click', postTestimony);
+
+/* Initialize */
+seedIfEmpty();
+renderList();
+
+</script>
+</body>
+</html>
