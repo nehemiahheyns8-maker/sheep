@@ -103,55 +103,55 @@
 const quizQuestions = {
   easy: [
     { q: "Who built the ark?", a: ["Moses", "Noah", "David"], c: 1, ref: "Genesis 6:14" },
-    { q: "How many disciples did Jesus have?", a: ["10", "12", "14"], c: 1, ref: "Luke 6:13" }
+    { q: "How many disciples did Jesus have?", a: ["10", "12", "14"], c: 1, ref: "Luke 6:13" },
+    { q: "What food did God provide the Israelites in the desert?", a: ["Manna", "Rice", "Breadsticks"], c: 0, ref: "Exodus 16:15" },
+    { q: "Who was swallowed by a big fish?", a: ["Jonah", "Peter", "Elijah"], c: 0, ref: "Jonah 1:17" },
+    { q: "What is the first book of the Bible?", a: ["Matthew", "Genesis", "Exodus"], c: 1, ref: "Genesis 1:1" }
   ],
   medium: [
     { q: "What should Christians put on to resist the devil?", a: ["Armor of God", "Prayer beads", "Golden crown"], c: 0, ref: "Ephesians 6:11" },
-    { q: "Finish: 'Love your ____ as yourself.'", a: ["enemy", "neighbor", "pastor"], c: 1, ref: "Mark 12:31" }
+    { q: "Finish: 'Love your ____ as yourself.'", a: ["enemy", "neighbor", "pastor"], c: 1, ref: "Mark 12:31" },
+    { q: "Who denied Jesus 3 times?", a: ["Peter", "Paul", "John"], c: 0, ref: "Luke 22:61" },
+    { q: "The fruit of the Spirit includes?", a: ["Love, Joy, Peace", "Gold, Silver, Bronze", "Pride, Anger, Hate"], c: 0, ref: "Galatians 5:22-23" },
+    { q: "What is the 'Great Commission'?", a: ["Make disciples of all nations", "Build churches", "Collect offerings"], c: 0, ref: "Matthew 28:19" }
   ],
   hard: [
     { q: "Paul wrote 2 Timothy from where?", a: ["Ephesus", "Prison in Rome", "Jerusalem"], c: 1, ref: "2 Timothy 1:8" },
-    { q: "Who had a vision of dry bones coming to life?", a: ["Elijah", "Ezekiel", "Isaiah"], c: 1, ref: "Ezekiel 37:1-14" }
+    { q: "Who had a vision of dry bones coming to life?", a: ["Elijah", "Ezekiel", "Isaiah"], c: 1, ref: "Ezekiel 37:1-14" },
+    { q: "Melchizedek was both a king and a ____?", a: ["Prophet", "Priest", "Judge"], c: 1, ref: "Hebrews 7:1" },
+    { q: "Where was the sermon on the mount preached?", a: ["Mount Sinai", "Mount of Olives", "Unknown mountain in Galilee"], c: 2, ref: "Matthew 5:1" },
+    { q: "What did Paul call the 'thorn in his flesh'?", a: ["Sin", "Messenger of Satan", "Sickness"], c: 1, ref: "2 Corinthians 12:7" }
   ]
 };
 
-let currentLevel = "";
-let currentIndex = 0;
-let score = 0;
-
-function startQuiz(level) {
-  currentLevel = level;
-  currentIndex = 0;
-  score = 0;
-  document.querySelector(".quiz-levels").style.display = "none";
-  document.getElementById("quiz-container").style.display = "block";
-  showQuestion();
-}
-
-function showQuestion() {
-  let q = quizQuestions[currentLevel][currentIndex];
-  let html = `<h3>${q.q}</h3>`;
-  q.a.forEach((opt, i) => {
-    html += `<button onclick="checkAnswer(${i})">${opt}</button><br>`;
-  });
-  document.getElementById("quiz-container").innerHTML = html;
-}
 
 function checkAnswer(i) {
   let q = quizQuestions[currentLevel][currentIndex];
-  if (i === q.c) {
-    score++;
-    alert("✅ Correct! (" + q.ref + ")");
-  } else {
-    alert("❌ Wrong! (" + q.ref + ")");
-  }
-  currentIndex++;
-  if (currentIndex < quizQuestions[currentLevel].length) {
-    showQuestion();
-  } else {
-    endQuiz();
-  }
+  let buttons = document.querySelectorAll("#quiz-container button");
+
+  buttons.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === q.c) {
+      btn.style.background = "#27ae60"; // green for correct
+    } else if (idx === i) {
+      btn.style.background = "#c0392b"; // red for wrong
+    }
+  });
+
+  document.getElementById("quiz-container").innerHTML += `
+    <p style="margin-top:10px; font-style:italic;">Reference: ${q.ref}</p>
+  `;
+
+  setTimeout(() => {
+    currentIndex++;
+    if (currentIndex < quizQuestions[currentLevel].length) {
+      showQuestion();
+    } else {
+      endQuiz();
+    }
+  }, 1500);
 }
+
 
 function endQuiz() {
   let message = score >= quizQuestions[currentLevel].length / 2 
