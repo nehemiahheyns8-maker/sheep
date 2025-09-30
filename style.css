@@ -230,5 +230,33 @@ body {
 .post p {
   color: #333;
   line-height: 1.6;
+  #quiz-container h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+#quiz-container button {
+  margin: 6px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #3498db;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#quiz-container button:hover {
+  background: #2980b9;
+}
+
+#quiz-container p {
+  font-size: 14px;
+  color: #555;
+}
+#quiz-container h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
 }
 
