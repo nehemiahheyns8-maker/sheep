@@ -93,6 +93,14 @@
   </div>
 
   <script>
+    <div class="quiz-levels">
+  <h2>Select a Level</h2>
+  <button onclick="startQuiz('easy')">🐑 Easy</button>
+  <button onclick="startQuiz('medium')">🕊️ Medium</button>
+  <button onclick="startQuiz('hard')">✝️ Deep</button>
+</div>
+<div id="quiz-container" style="display:none;"></div>
+
     const questions = [
       // --- Bible Facts ---
       { q: "Who built the ark?", options: ["Moses", "Noah", "Abraham", "David"], answer: "Noah", ref: "Genesis 6:13-14" },
