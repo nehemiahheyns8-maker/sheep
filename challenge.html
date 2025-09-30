@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Victory in Christ Challenges</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #f0f9ff, #e6f7ff, #ffffff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      padding: 30px;
+      color: #333;
+    }
+    h1 {
+      color: #2c3e50;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    .challenge-box {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px auto;
+      max-width: 600px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .challenge-box::before {
+      content: "✝️";
+      font-size: 40px;
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff;
+      padding: 5px 15px;
+      border-radius: 50%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .verse {
+      font-style: italic;
+      color: #555;
+      margin: 15px 0;
+    }
+    .action {
+      font-weight: bold;
+      color: #1d7a46;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>Victory in Christ Challenges</h1>
+  <p>We cannot fight temptation in our own strength. But through Jesus’ victory on the Cross and the power of the Holy Spirit, we are overcomers! ✨</p>
+
+  <div class="challenge-box" id="challenge">
+    <h2 id="challenge-title"></h2>
+    <p class="verse" id="challenge-verse"></p>
+    <p class="action" id="challenge-action"></p>
+  </div>
+
+  <footer>
+    Sheep of Christ Ministry • All Glory to Jesus ✝️
+  </footer>
+
+  <script>
+    const challenges = [
+      {
+        title: "Day 1: No Condemnation",
+        verse: "Romans 8:1 – 'There is now no condemnation for those who are in Christ Jesus.'",
+        action: "Write this verse down and thank God for setting you free."
+      },
+      {
+        title: "Day 2: Ask the Spirit",
+        verse: "Galatians 5:16 – 'Walk by the Spirit, and you will not gratify the desires of the flesh.'",
+        action: "When tempted today, whisper: 'Holy Spirit, help me.'"
+      },
+      {
+        title: "Day 3: Victory at the Cross",
+        verse: "1 Corinthians 15:57 – 'Thanks be to God! He gives us the victory through our Lord Jesus Christ.'",
+        action: "Thank Jesus in prayer for defeating sin on the cross."
+      },
+      {
+        title: "Day 4: Share Hope",
+        verse: "John 8:36 – 'So if the Son sets you free, you will be free indeed.'",
+        action: "Tell someone today: 'Jesus is stronger than any addiction.'"
+      },
+      {
+        title: "Day 5: Quiet Time",
+        verse: "Psalm 46:10 – 'Be still, and know that I am God.'",
+        action: "Spend 5 minutes in silence, asking the Spirit to guide your thoughts."
+      }
+    ];
+
+    // Pick challenge by day of month
+    const today = new Date().getDate();
+    const challenge = challenges[(today - 1) % challenges.length];
+
+    document.getElementById("challenge-title").innerText = challenge.title;
+    document.getElementById("challenge-verse").innerText = challenge.verse;
+    document.getElementById("challenge-action").innerText = challenge.action;
+  </script>
+</body>
+</html>
