@@ -79,6 +79,7 @@
     }
   </style>
 </head>
+  
 <body>
   <header>
     <h1>Sheep of Christ Quiz</h1>
@@ -91,15 +92,80 @@
     <div id="result"></div>
     <button id="restart" style="display:none;">Restart Quiz</button>
   </div>
-
-  <script>
-    <div class="quiz-levels">
+<div class="quiz-levels">
   <h2>Select a Level</h2>
   <button onclick="startQuiz('easy')">🐑 Easy</button>
   <button onclick="startQuiz('medium')">🕊️ Medium</button>
   <button onclick="startQuiz('hard')">✝️ Deep</button>
 </div>
 <div id="quiz-container" style="display:none;"></div>
+<script>
+const quizQuestions = {
+  easy: [
+    { q: "Who built the ark?", a: ["Moses", "Noah", "David"], c: 1, ref: "Genesis 6:14" },
+    { q: "How many disciples did Jesus have?", a: ["10", "12", "14"], c: 1, ref: "Luke 6:13" }
+  ],
+  medium: [
+    { q: "What should Christians put on to resist the devil?", a: ["Armor of God", "Prayer beads", "Golden crown"], c: 0, ref: "Ephesians 6:11" },
+    { q: "Finish: 'Love your ____ as yourself.'", a: ["enemy", "neighbor", "pastor"], c: 1, ref: "Mark 12:31" }
+  ],
+  hard: [
+    { q: "Paul wrote 2 Timothy from where?", a: ["Ephesus", "Prison in Rome", "Jerusalem"], c: 1, ref: "2 Timothy 1:8" },
+    { q: "Who had a vision of dry bones coming to life?", a: ["Elijah", "Ezekiel", "Isaiah"], c: 1, ref: "Ezekiel 37:1-14" }
+  ]
+};
+
+let currentLevel = "";
+let currentIndex = 0;
+let score = 0;
+
+function startQuiz(level) {
+  currentLevel = level;
+  currentIndex = 0;
+  score = 0;
+  document.querySelector(".quiz-levels").style.display = "none";
+  document.getElementById("quiz-container").style.display = "block";
+  showQuestion();
+}
+
+function showQuestion() {
+  let q = quizQuestions[currentLevel][currentIndex];
+  let html = `<h3>${q.q}</h3>`;
+  q.a.forEach((opt, i) => {
+    html += `<button onclick="checkAnswer(${i})">${opt}</button><br>`;
+  });
+  document.getElementById("quiz-container").innerHTML = html;
+}
+
+function checkAnswer(i) {
+  let q = quizQuestions[currentLevel][currentIndex];
+  if (i === q.c) {
+    score++;
+    alert("✅ Correct! (" + q.ref + ")");
+  } else {
+    alert("❌ Wrong! (" + q.ref + ")");
+  }
+  currentIndex++;
+  if (currentIndex < quizQuestions[currentLevel].length) {
+    showQuestion();
+  } else {
+    endQuiz();
+  }
+}
+
+function endQuiz() {
+  let message = score >= quizQuestions[currentLevel].length / 2 
+    ? "Well done faithful servant! ✨" 
+    : "Keep going, God is with you 🙏";
+  document.getElementById("quiz-container").innerHTML = `
+    <h2>Your Score: ${score}/${quizQuestions[currentLevel].length}</h2>
+    <p>${message}</p>
+    <button onclick="location.reload()">Play Again</button>
+  `;
+}
+</script>
+
+  <script>
 
     const questions = [
       // --- Bible Facts ---
