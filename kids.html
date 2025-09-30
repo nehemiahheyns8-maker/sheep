@@ -106,6 +106,20 @@
   <footer>
     <p style="text-align:center;">© 2025 Kids’ Corner | Part of our Christ-based site</p>
   </footer>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
+
 
