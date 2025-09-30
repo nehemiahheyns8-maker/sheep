@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prayer Wall - Sheep of Christ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🙏 Prayer Wall</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="quiz.html">Bible Quiz</a>
+      <a href="prayer.html">Prayer Wall</a>
+      <a href="testimonies.html">Testimonies</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="prayer-form">
+      <h2>Submit a Prayer Request</h2>
+      <textarea id="prayerText" maxlength="200" placeholder="Write your prayer request here (max 200 characters)"></textarea>
+      <br>
+      <button onclick="submitPrayer()">🙏 Submit</button>
+    </section>
+
+    <section id="prayer-list">
+      <h2>Community Prayer Requests</h2>
+      <div id="prayers"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Sheep of Christ © 2025</p>
+  </footer>
+
+  <script>
+    let prayers = [];
+
+    function submitPrayer() {
+      const text = document.getElementById("prayerText").value.trim();
+      if (!text) return alert("Please enter a prayer request.");
+      
+      let prayer = { text: text, count: 0 };
+      prayers.push(prayer);
+      document.getElementById("prayerText").value = "";
+      displayPrayers();
+    }
+
+    function prayFor(index) {
+      prayers[index].count++;
+      displayPrayers();
+    }
+
+    function displayPrayers() {
+      const list = document.getElementById("prayers");
+      list.innerHTML = "";
+      prayers.forEach((p, i) => {
+        list.innerHTML += `
+          <div class="prayer-card">
+            <p>${p.text}</p>
+            <button onclick="prayFor(${i})">💖 I prayed (${p.count})</button>
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
