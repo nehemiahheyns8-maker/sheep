@@ -114,5 +114,18 @@
       <p>Helping those in need and showing the love of Christ through acts of service.</p>
     </div>
   </div>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
